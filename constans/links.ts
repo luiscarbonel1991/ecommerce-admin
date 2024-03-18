@@ -1,11 +1,16 @@
 import {SidebarNavItem} from "@/types";
-import {Layers, LayoutDashboard, PlusIcon, Settings} from "lucide-react";
+import {ImageIcon, Layers, LayoutDashboard, PlusIcon, Settings} from "lucide-react";
 
 export const sidebarItems: SidebarNavItem[] = [
     {
         icon: LayoutDashboard,
         title: "Dashboard",
         href: "/",
+    },
+    {
+        icon: ImageIcon,
+        title: 'Billboard',
+        href: '/billboard',
     },
     {
         icon: Layers,

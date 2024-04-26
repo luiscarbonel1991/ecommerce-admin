@@ -4,7 +4,7 @@ import {ResizableHandle, ResizablePanel, ResizablePanelGroup} from "@/components
 import {useState} from "react";
 import {cn} from "@/lib/utils";
 import {Nav} from "@/components/nav";
-import {ImageIcon, Inbox, LayoutDashboard, LucideIcon, PaletteIcon, PencilRulerIcon, Send} from "lucide-react";
+import {ImageIcon, Inbox, LayoutDashboard, ListEnd, LucideIcon, PaletteIcon, PencilRulerIcon, Send} from "lucide-react";
 import {TooltipProvider} from "@/components/ui/tooltip";
 import {useParams, usePathname} from "next/navigation";
 import {Separator} from "@/components/ui/separator";
@@ -49,6 +49,13 @@ const Ecommerce = ({
             variant: pathName === `/${params.storeId}/billboard` ? "default" : "ghost",
         },
         {
+            href: `/${params.storeId}/category`,
+            title: "Categories",
+            label: "",
+            icon: ListEnd,
+            variant: pathName === `/${params.storeId}/category` ? "default" : "ghost",
+        },
+        {
             href: `/${params.storeId}/store`,
             title: "Store",
             label: "",
@@ -73,7 +80,7 @@ const Ecommerce = ({
             variant: pathName === `/${params.storeId}/color` ? "default" : "ghost"
         },
         {
-            href: `/${params.storeId}/size`,
+            href: `/${params.storeId}/sizes`,
             title: "Size",
             label: "",
             icon: PencilRulerIcon,

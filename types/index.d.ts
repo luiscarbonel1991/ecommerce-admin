@@ -93,3 +93,44 @@ export interface IImage {
     updatedAt?: Date;
 }
 
+export declare type Category = {
+    id: number
+    name: string
+    billboard: Billboard
+    storeId: number
+    createdAt: Date
+    updatedAt: Date
+}
+
+export declare type CreateUpdateCategoryParams = {
+    name: string
+    storeId: number
+    billboardId: number
+}
+
+export declare type Size = {
+    id: number
+    name: string
+    value: string
+    storeId: number
+    createdAt: Date
+    updatedAt: Date
+}
+
+export declare type SizeFormModel = {
+    id: number
+    name: string
+    value: string
+    storeId: number
+}
+
+export declare type UpdateSizeParams = {
+    name: string
+    value: string
+}
+
+export declare type CreateSizeParams = {
+    name: string
+    value: string
+    storeId: number
+}

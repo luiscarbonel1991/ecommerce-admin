@@ -1,13 +1,13 @@
 "use client";
 
 
-import {BillboardFormModel, CreateBillboardParams, ImageM, UpdateBillboardParams} from "@/types";
+import {CreateSizeParams, ImageM, SizeFormModel, UpdateSizeParams} from "@/types";
 import Heading from "@/components/heading";
 import {Separator} from "@/components/ui/separator";
 import {Button} from "@/components/ui/button";
 import {TrashIcon} from "lucide-react";
 import {useForm} from "react-hook-form";
-import {BillboardFormSchema, BillboardFormValues} from "@/schemas";
+import {SizeFormSchema, SizeFormValues} from "@/schemas";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
@@ -17,79 +17,60 @@ import {toast} from "@/components/ui/use-toast";
 import {ToastAction} from "@/components/ui/toast";
 import {useParams, useRouter} from "next/navigation";
 import {AlertModal} from "@/components/modals/alert-modal";
-import {createBillboard, deleteBillboard, updateBillboard} from "@/lib/actions/billboard";
-import ImageUpload from "@/components/image-upload";
+import {createSize, deleteSize, updateSize} from "@/lib/actions/size.action";
 
-interface BillboardFormProps {
-    billboard: BillboardFormModel | null
+interface SizeFormProps {
+    size: SizeFormModel | null
 }
 
-export const BillboardForm = ({billboard}: BillboardFormProps) => {
+export const SizeForm = ({size}: SizeFormProps) => {
 
     const router = useRouter()
     const params = useParams();
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
 
-    const title = billboard ? "Edit Billboard" : "Create Billboard"
-    const subtitle = billboard ? "Edit your Billboard details" : "Create a new Billboard"
-    const toastTitle = billboard ? "Billboard updated" : "Billboard created"
-    const toastDescription = billboard ? "Your Billboard details have been updated." : "Your Billboard has been created."
-    const actionText = billboard ? "Save changes" : "Create"
+    const title = size ? "Edit Size" : "Create Size"
+    const subtitle = size ? "Edit your Size details" : "Create a new Size"
+    const toastTitle = size ? "Size updated" : "Size created"
+    const toastDescription = size ? "Your Size details have been updated." : "Your Size has been created."
+    const actionText = size ? "Save changes" : "Create"
 
-    const [image, setImage] = useState<ImageM | null>(billboard?.image || null)
-
-    const form = useForm<BillboardFormValues>({
-        resolver: zodResolver(BillboardFormSchema),
+    const form = useForm<SizeFormValues>({
+        resolver: zodResolver(SizeFormSchema),
         defaultValues: {
-            name: billboard?.name || "",
-            imageUrl: billboard?.image?.url || "",
+            name: size?.name || "",
+            value: size?.value || "",
         }
     })
 
-    const onDeleteImage = async () => {
-            setImage(null)
-            router.refresh()
-    }
-
-    const onSubmit = async (values: BillboardFormValues) => {
+    const onSubmit = async (values: SizeFormValues) => {
 
         try {
 
             setLoading(true)
 
-            if (!image) {
-                toast({
-                    variant: "destructive",
-                    title: "Image not found",
-                    description: "Please upload an image for the Billboard.",
-                })
 
-                return
-            }
-
-
-            if (billboard) {
-                      await updateBillboard(billboard.id, {
+            if (size) {
+                      await updateSize(size.id, {
                               name: values.name,
-                              imageId: image?.id,
-                              storeId: billboard.storeId
-                          } as UpdateBillboardParams
+                              value: values.value,
+                          } as UpdateSizeParams
                       )
             } else {
 
 
-                const createBillboardParams = {
+                const createSizeParams = {
                     name: values.name,
+                    value: values.value,
                     storeId: parseInt(params.storeId as string),
-                    imageId: image?.id,
-                } as CreateBillboardParams
+                } as CreateSizeParams
 
-                await createBillboard(createBillboardParams)
+                await createSize(createSizeParams)
             }
 
             router.refresh()
-            router.push(`/${params.storeId}/billboard`)
+            router.push(`/${params.storeId}/sizes`)
             toast({
                 title: toastTitle,
                 description: toastDescription,
@@ -113,20 +94,20 @@ export const BillboardForm = ({billboard}: BillboardFormProps) => {
         try {
 
             setLoading(true)
-            const deleted = await deleteBillboard(billboard?.id as number)
+            const deleted = await deleteSize(size?.id as number)
 
             if (!deleted) {
                 toast({
                     variant: "destructive",
-                    title: "Billboard not found",
-                    description: "The Billboard you are trying to delete does not exist.",
+                    title: "Size not found",
+                    description: "The Size you are trying to delete does not exist.",
                 })
             } else {
                 router.refresh()
-                router.push(`/${params.storeId}/billboard`)
+                router.push(`/${params.storeId}/sizes`)
                 toast({
-                    title: "Billboard deleted",
-                    description: "Your Billboard has been deleted.",
+                    title: "Size deleted",
+                    description: "Your Size has been deleted.",
                     className: "bg-green-400",
                 })
             }
@@ -160,7 +141,7 @@ export const BillboardForm = ({billboard}: BillboardFormProps) => {
 
 
                 {
-                    billboard && (
+                    size && (
                         <Button
                             size={"icon"}
                             variant={"default"}
@@ -183,28 +164,6 @@ export const BillboardForm = ({billboard}: BillboardFormProps) => {
                     <div className="grid grid-cols-3 gap-4">
                         <FormField
                             control={form.control}
-                            name="imageUrl"
-                            render={({field}) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <ImageUpload
-                                            onValueChange={field.onChange}
-                                            image={image}
-                                            setImage={setImage}
-                                            onDeleteImage={onDeleteImage}
-                                        />
-                                    </FormControl>
-                                    <FormMessage/>
-                                </FormItem>
-                            )}
-
-                        />
-                    </div>
-
-
-                    <div className="grid grid-cols-3 gap-4">
-                        <FormField
-                            control={form.control}
                             name="name"
                             render={({field}) => (
                                 <FormItem>
@@ -213,6 +172,22 @@ export const BillboardForm = ({billboard}: BillboardFormProps) => {
                                         <Input
                                             disabled={loading}
                                             placeholder={"Billboard Collection One"} {...field} />
+                                    </FormControl>
+                                    <FormMessage/>
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            control={form.control}
+                            name="value"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>Value</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            disabled={loading}
+                                            placeholder={"Value Collection One"} {...field} />
                                     </FormControl>
                                     <FormMessage/>
                                 </FormItem>

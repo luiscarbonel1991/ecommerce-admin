@@ -20,8 +20,22 @@ export const BillboardModalSchema =  z.object({
 export type BillboardModalFormValues = z.infer<typeof BillboardModalSchema>
 
 export const BillboardFormSchema =  z.object({
-    name: z.string().min(3, "Name is too short").max(20, "Name is too long"),
+    name: z.string().min(3, "Name is too short").max(50, "Name is too long"),
     imageUrl: z.string().url( "Invalid Image URL")
 })
 
 export type BillboardFormValues = z.infer<typeof BillboardFormSchema>
+
+export const CategoryFormSchema =  z.object({
+    name: z.string().min(3, "Name is too short").max(20, "Name is too long"),
+    billboardId: z.string().min(1)
+})
+
+export type CategoryFormValues = z.infer<typeof CategoryFormSchema>
+
+export const SizeFormSchema =  z.object({
+    name: z.string().min(3, "Name is too short").max(20, "Name is too long"),
+    value: z.string().min(1, "Value is too short").max(20, "Value is too long"),
+})
+
+export type SizeFormValues = z.infer<typeof SizeFormSchema>

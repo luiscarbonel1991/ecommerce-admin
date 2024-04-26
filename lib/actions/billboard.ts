@@ -152,7 +152,7 @@ export const findBillboards = async (storeId: number) => {
             .where(eq(billboard.storeId, storeId))
             .orderBy(desc(billboard.createdAt))
 
-        return billboardsFound as Billboard[]
+        return billboardsFound as Billboard[] || []
     } catch (error) {
         handleError(error)
     }

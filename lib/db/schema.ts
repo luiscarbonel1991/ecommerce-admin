@@ -49,3 +49,14 @@ export const category = pgTable("category", {
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at"),
 })
+
+export const size = pgTable("size", {
+    id: serial("id").primaryKey(),
+    name: varchar("name").notNull(),
+    value: varchar("value").notNull(),
+    storeId: integer("store_id").notNull().references(() => store.id, {
+        onDelete: "cascade"
+    }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at"),
+})

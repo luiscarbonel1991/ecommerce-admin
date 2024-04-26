@@ -1,15 +1,12 @@
-import {findBillboard} from "@/lib/actions/billboard";
 import {isInteger} from "@/lib/utils";
-import {BillboardForm} from "@/app/(dashboard)/[storeId]/(routes)/billboard/[billboardId]/_components/billboard-form";
-import {BillboardFormModel, SizeFormModel} from "@/types";
-import {findImageById} from "@/lib/actions/image.action";
+import {SizeFormModel} from "@/types";
 import {findSizeById} from "@/lib/actions/size.action";
 import {SizeForm} from "@/app/(dashboard)/[storeId]/(routes)/sizes/[sizeId]/_components/size-form";
 
 interface SizeCreateUpdatePageProps {
     params: { storeId: string, sizeId: string }
 }
-const BillboardCreateUpdatePage = async ({
+const SizeCreateUpdatePage = async ({
                                             params
                                          }: SizeCreateUpdatePageProps) => {
 
@@ -37,4 +34,4 @@ const BillboardCreateUpdatePage = async ({
     );
 }
 
-export default BillboardCreateUpdatePage;
+export default SizeCreateUpdatePage;

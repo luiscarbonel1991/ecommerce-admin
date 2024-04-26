@@ -6,6 +6,7 @@ import {auth} from "@clerk/nextjs";
 import {size} from "@/lib/db/schema";
 import {desc, eq} from "drizzle-orm";
 import {CreateSizeParams, Size, UpdateSizeParams} from "@/types";
+import {revalidatePath} from "next/cache";
 
 
 export const findSizes = async (storeId: number) => {
@@ -63,6 +64,8 @@ export const createSize = async (createSizeParams: CreateSizeParams) => {
             .values(createSizeParams)
             .returning({id: size.id})
 
+        revalidatePath(`/${createSizeParams.storeId}/sizes`)
+
         return created.length > 0 ? created[0].id : null
 
     } catch (error) {
@@ -84,6 +87,7 @@ export const updateSize = async (id: number, updateSizeParams: UpdateSizeParams)
             .where(eq(size.id, id))
             .returning({id: size.id})
 
+        revalidatePath(`/${updateSizeParams.storeId}/sizes`)
         return updated.length > 0 ? updated[0].id : null
 
     } catch (error) {
@@ -102,8 +106,9 @@ export const deleteSize = async (id: number) => {
 
         const deleted = await db.delete(size)
             .where(eq(size.id, id))
-            .returning({id: size.id})
+            .returning({id: size.id, storeId: size.storeId})
 
+        revalidatePath(`/${deleted[0].storeId}/sizes`)
         return deleted.length > 0 ? deleted[0].id : null
 
     } catch (error) {

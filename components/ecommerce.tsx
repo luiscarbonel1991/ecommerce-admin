@@ -62,6 +62,14 @@ const Ecommerce = ({
             icon: Inbox,
             variant: pathName === `/${params.storeId}/store` ? "default" : "ghost",
 
+        },
+        {
+            href: `/${params.storeId}/products`,
+            title: "Products",
+            label: "",
+            icon: Send,
+            variant: pathName === `/${params.storeId}/products` ? "default" : "ghost",
+
         }
     ]
 
@@ -73,11 +81,11 @@ const Ecommerce = ({
         variant: "default" | "ghost";
     }[]= [
         {
-            href: `/${params.storeId}/color`,
+            href: `/${params.storeId}/colors`,
             title: "Color",
             label: "",
             icon: PaletteIcon,
-            variant: pathName === `/${params.storeId}/color` ? "default" : "ghost"
+            variant: pathName === `/${params.storeId}/colors` ? "default" : "ghost"
         },
         {
             href: `/${params.storeId}/sizes`,

@@ -127,9 +127,39 @@ export declare type SizeFormModel = {
 export declare type UpdateSizeParams = {
     name: string
     value: string
+    storeId: number
 }
 
 export declare type CreateSizeParams = {
+    name: string
+    value: string
+    storeId: number
+}
+
+
+export declare type Color = {
+    id: number
+    name: string
+    value: string
+    storeId: number
+    createdAt: Date
+    updatedAt: Date
+}
+
+export declare type ColorFormModel = {
+    id: number
+    name: string
+    value: string
+    storeId: number
+}
+
+export declare type UpdateColorParams = {
+    name: string
+    value: string
+    storeId: number
+}
+
+export declare type CreateColorParams = {
     name: string
     value: string
     storeId: number

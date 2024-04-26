@@ -6,21 +6,21 @@ import {Button} from "@/components/ui/button";
 import {PlusCircle} from "lucide-react";
 import {Separator} from "@/components/ui/separator";
 import {useParams, useRouter} from "next/navigation";
-import {Size} from "@/types";
-import {SizeColumn, columns} from "@/app/(dashboard)/[storeId]/(routes)/sizes/_components/columns";
+import {Color} from "@/types";
+import {ColorColumn, columns} from "@/app/(dashboard)/[storeId]/(routes)/colors/_components/columns";
 import {format} from "date-fns";
 import {DataTable} from "@/components/ui/data-table";
 
-interface SizesProps {
-    data: Size[] | undefined
+interface ColorsProps {
+    data: Color[] | undefined
 }
-export const Sizes = ({ data }: SizesProps) => {
+export const Colors = ({ data }: ColorsProps) => {
 
     const  router = useRouter()
     const params = useParams()
 
-    const navigateToCreateSize = () => {
-        router.push(`/${params.storeId}/sizes/create`)
+    const navigateToCreateColor = () => {
+        router.push(`/${params.storeId}/colors/create`)
     }
 
     const sizeData = data?.map( b => (
@@ -29,7 +29,7 @@ export const Sizes = ({ data }: SizesProps) => {
             name: b.name,
             value: b.value,
             createdAt: format(new Date(b.createdAt), "MMMM dd, yyyy")
-        } as SizeColumn
+        } as ColorColumn
     )) || []
 
 
@@ -37,16 +37,16 @@ export const Sizes = ({ data }: SizesProps) => {
         <>
             <div className="flex items-center justify-between">
                 <Heading
-                    title={`Sizes (${sizeData.length})`}
-                    subtitle={"Manage your sizes"}
+                    title={`Colors (${sizeData.length})`}
+                    subtitle={"Manage your colors"}
                 />
                 <Button
 
                     variant={"default"}
-                    onClick={navigateToCreateSize}
+                    onClick={navigateToCreateColor}
                 >
                     <PlusCircle className="mr-2 h-4 w-4"/>
-                    Add Size
+                    Add Color
                 </Button>
             </div>
 

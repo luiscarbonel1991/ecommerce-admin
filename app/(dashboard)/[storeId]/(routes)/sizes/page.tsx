@@ -3,13 +3,13 @@ import {redirect} from "next/navigation";
 import {findSizes} from "@/lib/actions/size.action";
 import {Sizes} from "@/app/(dashboard)/[storeId]/(routes)/sizes/_components/sizes";
 
-interface BillboardPageProps {
+interface SizePageProps {
     params: {
         storeId: string
     }
 }
 
-const SizesPage = async ({params}: BillboardPageProps) => {
+const SizesPage = async ({params}: SizePageProps) => {
 
     const {userId} = auth()
 

@@ -39,3 +39,12 @@ export const SizeFormSchema =  z.object({
 })
 
 export type SizeFormValues = z.infer<typeof SizeFormSchema>
+
+
+export const ColorFormSchema =  z.object({
+    name: z.string().min(3, "Name is too short").max(20, "Name is too long"),
+    value: z.string().min(4).regex(/^#[0-9A-F]{6}$/i, "Invalid color value, must be a hex color code")
+})
+
+export type ColorFormValues = z.infer<typeof ColorFormSchema>
+

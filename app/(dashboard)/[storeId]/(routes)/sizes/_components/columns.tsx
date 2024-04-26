@@ -1,7 +1,7 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import CellAction from "@/app/(dashboard)/[storeId]/(routes)/billboard/_components/cell-action";
+import CellAction from "@/app/(dashboard)/[storeId]/(routes)/sizes/_components/cell-action";
 
 
 export type SizeColumn = {

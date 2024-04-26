@@ -12,11 +12,12 @@ import {toast} from "@/components/ui/use-toast";
 import {ToastAction} from "@/components/ui/toast";
 import {useState} from "react";
 import {AlertModal} from "@/components/modals/alert-modal";
-import {SizeColumn} from "@/app/(dashboard)/[storeId]/(routes)/sizes/_components/columns";
-import {deleteSize} from "@/lib/actions/size.action";
+import {deleteColor} from "@/lib/actions/color.action";
+import {ColorColumn} from "@/app/(dashboard)/[storeId]/(routes)/colors/_components/columns";
+
 
 interface CellActionProps {
-    rowData: SizeColumn
+    rowData: ColorColumn
 }
 
 const CellAction = ({rowData}: CellActionProps) => {
@@ -30,19 +31,19 @@ const CellAction = ({rowData}: CellActionProps) => {
         try {
 
             setLoading(true)
-            const deleted = await deleteSize(Number(rowData.id))
+            const deleted = await deleteColor(Number(rowData.id))
 
             if (!deleted) {
                 toast({
                     variant: "destructive",
-                    title: "Size not found",
-                    description: "The size you are trying to delete does not exist.",
+                    title: "Color not found",
+                    description: "The Color you are trying to delete does not exist.",
                 })
             } else {
-                router.push(`/${params.storeId}/sizes`)
+                router.push(`/${params.storeId}/colors`)
                 toast({
-                    title: "Size deleted",
-                    description: "Your Size has been deleted.",
+                    title: "Color deleted",
+                    description: "Your color has been deleted.",
                     className: "bg-green-400",
                 })
             }
@@ -77,7 +78,7 @@ const CellAction = ({rowData}: CellActionProps) => {
                     <DropdownMenuLabel>Actions</DropdownMenuLabel>
                     <DropdownMenuItem
                         className="cursor-pointer"
-                        onClick={() => router.push(`/${params.storeId}/sizes/${rowData.id}`)}
+                        onClick={() => router.push(`/${params.storeId}/colors/${rowData.id}`)}
                     >
                         <Edit className="mr-2 h-4 w-4"/>
                         Edit

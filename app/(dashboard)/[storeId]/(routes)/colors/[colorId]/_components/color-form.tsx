@@ -1,13 +1,13 @@
 "use client";
 
 
-import {CreateSizeParams, SizeFormModel, UpdateSizeParams} from "@/types";
+import {ColorFormModel, CreateColorParams, UpdateColorParams} from "@/types";
 import Heading from "@/components/heading";
 import {Separator} from "@/components/ui/separator";
 import {Button} from "@/components/ui/button";
 import {TrashIcon} from "lucide-react";
 import {useForm} from "react-hook-form";
-import {SizeFormSchema, SizeFormValues} from "@/schemas";
+import {ColorFormSchema, ColorFormValues} from "@/schemas";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
@@ -17,60 +17,60 @@ import {toast} from "@/components/ui/use-toast";
 import {ToastAction} from "@/components/ui/toast";
 import {useParams, useRouter} from "next/navigation";
 import {AlertModal} from "@/components/modals/alert-modal";
-import {createSize, deleteSize, updateSize} from "@/lib/actions/size.action";
+import {createColor, deleteColor, updateColor} from "@/lib/actions/color.action";
 
-interface SizeFormProps {
-    size: SizeFormModel | null
+interface ColorFormProps {
+    color: ColorFormModel | null
 }
 
-export const SizeForm = ({size}: SizeFormProps) => {
+export const ColorForm = ({color}: ColorFormProps) => {
 
     const router = useRouter()
     const params = useParams();
     const [open, setOpen] = useState(false)
     const [loading, setLoading] = useState(false)
 
-    const title = size ? "Edit Size" : "Create Size"
-    const subtitle = size ? "Edit your Size details" : "Create a new Size"
-    const toastTitle = size ? "Size updated" : "Size created"
-    const toastDescription = size ? "Your Size details have been updated." : "Your Size has been created."
-    const actionText = size ? "Save changes" : "Create"
+    const title = color ? "Edit Color" : "Create Color"
+    const subtitle = color ? "Edit your Color details" : "Create a new Color"
+    const toastTitle = color ? "Color updated" : "Color created"
+    const toastDescription = color ? "Your Color details have been updated." : "Your Color has been created."
+    const actionText = color ? "Save changes" : "Create"
 
-    const form = useForm<SizeFormValues>({
-        resolver: zodResolver(SizeFormSchema),
+    const form = useForm<ColorFormValues>({
+        resolver: zodResolver(ColorFormSchema),
         defaultValues: {
-            name: size?.name || "",
-            value: size?.value || "",
+            name: color?.name || "",
+            value: color?.value || "",
         }
     })
 
-    const onSubmit = async (values: SizeFormValues) => {
+    const onSubmit = async (values: ColorFormValues) => {
 
         try {
 
             setLoading(true)
 
 
-            if (size) {
-                      await updateSize(size.id, {
+            if (color) {
+                      await updateColor(color.id, {
                               name: values.name,
                               value: values.value,
                               storeId: parseInt(params.storeId as string),
-                          } as UpdateSizeParams
+                          } as UpdateColorParams
                       )
             } else {
 
 
-                const createSizeParams = {
+                const createColorParams = {
                     name: values.name,
                     value: values.value,
                     storeId: parseInt(params.storeId as string),
-                } as CreateSizeParams
+                } as CreateColorParams
 
-                await createSize(createSizeParams)
+                await createColor(createColorParams)
             }
 
-            router.push(`/${params.storeId}/sizes`)
+            router.push(`/${params.storeId}/colors`)
             toast({
                 title: toastTitle,
                 description: toastDescription,
@@ -94,20 +94,20 @@ export const SizeForm = ({size}: SizeFormProps) => {
         try {
 
             setLoading(true)
-            const deleted = await deleteSize(size?.id as number)
+            const deleted = await deleteColor(color?.id as number)
 
             if (!deleted) {
                 toast({
                     variant: "destructive",
-                    title: "Size not found",
-                    description: "The Size you are trying to delete does not exist.",
+                    title: "Color not found",
+                    description: "The Color you are trying to delete does not exist.",
                 })
             } else {
                 router.refresh()
-                router.push(`/${params.storeId}/sizes`)
+                router.push(`/${params.storeId}/colors`)
                 toast({
-                    title: "Size deleted",
-                    description: "Your Size has been deleted.",
+                    title: "Color deleted",
+                    description: "Your Color has been deleted.",
                     className: "bg-green-400",
                 })
             }
@@ -141,7 +141,7 @@ export const SizeForm = ({size}: SizeFormProps) => {
 
 
                 {
-                    size && (
+                    color && (
                         <Button
                             size={"icon"}
                             variant={"default"}
@@ -171,7 +171,7 @@ export const SizeForm = ({size}: SizeFormProps) => {
                                     <FormControl>
                                         <Input
                                             disabled={loading}
-                                            placeholder={"Size name"} {...field} />
+                                            placeholder={"Color name"} {...field} />
                                     </FormControl>
                                     <FormMessage/>
                                 </FormItem>
@@ -185,9 +185,15 @@ export const SizeForm = ({size}: SizeFormProps) => {
                                 <FormItem>
                                     <FormLabel>Value</FormLabel>
                                     <FormControl>
-                                        <Input
-                                            disabled={loading}
-                                            placeholder={"Size value"} {...field} />
+                                       <div className="flex items-center gap-x-4">
+                                           <Input
+                                               disabled={loading}
+                                               placeholder={"Color value"} {...field} />
+                                           <div
+                                               className="border p-4 rounded-full"
+                                               style={{ backgroundColor: field.value }}
+                                               />
+                                       </div>
                                     </FormControl>
                                     <FormMessage/>
                                 </FormItem>
